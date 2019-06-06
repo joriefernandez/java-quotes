@@ -4,11 +4,15 @@
 package javaquotes;
 
 public class App {
-    public String getGreeting() {
-        return "Hello world.";
-    }
+
+    private static final String FILE = "src/main/resources/recentquotes.json";
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+
+       QuoteReader qReader = new QuoteReader(FILE);
+       System.out.println(qReader.getRandomQuote());
+
     }
+
+
 }
