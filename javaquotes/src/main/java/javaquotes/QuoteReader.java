@@ -16,18 +16,17 @@ import java.util.Random;
 
 public class QuoteReader {
 
+    //Quote file
     private static final String FILE = "src/main/resources/recentquotes.json";
 
-    //quote
+    //list of quotes
     protected List<Quote> quotes;
 
-    //quote
+    //quote from API
     protected QuoteAPI quoteAPI;
 
+    //Random quote
     protected String quote;
-
-    //String file
-    private static String filename;
 
     //Constructor
     public QuoteReader(){
@@ -48,32 +47,34 @@ public class QuoteReader {
 
     //get quote from API
     private String readQuote(){
+        //read quotes from file
         readQuoteFile();
         try {
             URL url = new URL("http://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en");
-            //  &apiKey=" +System.getenv("YELP_API_KEY")
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            //check if getting data is successful
             if(con.getResponseCode() == 200){
-                // this line of code actually goes to the internet!
+                //init reader
                 BufferedReader reader = new BufferedReader(new InputStreamReader((con.getInputStream())));
 
                 // get json data in response
-                // use Gson to parse json string into a number fact object
+                // use gson
                 Gson gson = new GsonBuilder().serializeNulls().create();
-
+                //create a quoteAPI object
                 quoteAPI = gson.fromJson(reader, QuoteAPI.class);
+                //add to the list of quotes
                 quotes.add(new Quote(quoteAPI.getQuoteAuthor(), quoteAPI.getQuoteText()));
-
+                //set resulting quote
                 quote = quoteAPI.toString() ;
+                //write quotes to the file
                 writeToFile();
 
             }
 
         } catch (IOException e) {
-//            readQuoteFile();
+            //get random quote in the file
             quote = generateRandomQuote();
-
         }
         return quote;
     }

@@ -5,8 +5,7 @@ package javaquotes;
 
 public class App {
 
-    private static final String FILE = "src/main/resources/recentquotes.json";
-
+   //Program to get random quote
     public static void main(String[] args) {
 
        QuoteReader qReader = new QuoteReader();
