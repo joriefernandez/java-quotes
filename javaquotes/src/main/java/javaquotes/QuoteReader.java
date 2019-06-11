@@ -18,7 +18,6 @@ public class QuoteReader {
 
     private static final String FILE = "src/main/resources/recentquotes.json";
 
-
     //quote
     protected List<Quote> quotes;
 
@@ -26,10 +25,13 @@ public class QuoteReader {
     protected QuoteAPI quoteAPI;
 
     protected String quote;
+
+    //String file
+    private static String filename;
+
     //Constructor
     public QuoteReader(){
         this.quote = readQuote();
-
     }
 
     //Read  quotes from file
@@ -91,16 +93,18 @@ public class QuoteReader {
         return quotes;
     }
 
+    //Return random quote
     public String getRandomQuote(){
         return quote;
     }
 
+    //Write to file
     private void writeToFile(){
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         String json = gson.toJson(quotes);
         try {
-            System.out.println("Writing to file...");
+
             FileWriter writer = new FileWriter(FILE);
             writer.write(json);
             writer.close();

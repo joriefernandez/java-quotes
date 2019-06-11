@@ -5,6 +5,7 @@ package javaquotes;
 
 public class App {
 
+    private static final String FILE = "src/main/resources/recentquotes.json";
 
     public static void main(String[] args) {
 
