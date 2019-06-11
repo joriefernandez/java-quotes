@@ -9,7 +9,7 @@ public class App {
 
     public static void main(String[] args) {
 
-       QuoteReader qReader = new QuoteReader(FILE);
+       QuoteReader qReader = new QuoteReader();
        System.out.println(qReader.getRandomQuote());
 
     }
