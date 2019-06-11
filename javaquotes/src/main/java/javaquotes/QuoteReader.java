@@ -1,12 +1,16 @@
 package javaquotes;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -16,7 +20,7 @@ public class QuoteReader {
 
 
     //quote
-    protected Quote[] quotes;
+    protected List<Quote> quotes;
 
     //quote
     protected QuoteAPI quoteAPI;
@@ -33,7 +37,7 @@ public class QuoteReader {
         Gson gson = new Gson();
         try {
             JsonReader reader = new JsonReader(new FileReader(FILE));
-            quotes = gson.fromJson(reader, Quote[].class);
+            quotes = gson.fromJson(reader, new TypeToken<List<Quote>>(){}.getType());
 
         } catch (FileNotFoundException e) {
             System.out.println("File not found!");
@@ -42,6 +46,7 @@ public class QuoteReader {
 
     //get quote from API
     private String readQuote(){
+        readQuoteFile();
         try {
             URL url = new URL("http://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en");
             //  &apiKey=" +System.getenv("YELP_API_KEY")
@@ -53,20 +58,19 @@ public class QuoteReader {
 
                 // get json data in response
                 // use Gson to parse json string into a number fact object
-                Gson gson = new Gson();
-                quoteAPI = gson.fromJson(reader, QuoteAPI.class);
-                // access the text of the number fact
-                // return that text so that it can be printed
-                quote = quoteAPI.toString() ;
+                Gson gson = new GsonBuilder().serializeNulls().create();
 
-            }else{
-               readQuoteFile();
-                quote = generateRandomQuote();
+                quoteAPI = gson.fromJson(reader, QuoteAPI.class);
+                quotes.add(new Quote(quoteAPI.getQuoteAuthor(), quoteAPI.getQuoteText()));
+
+                quote = quoteAPI.toString() ;
+                writeToFile();
+
             }
 
-
         } catch (IOException e) {
-            System.out.println("Error getting quote");
+//            readQuoteFile();
+            quote = generateRandomQuote();
 
         }
         return quote;
@@ -75,20 +79,36 @@ public class QuoteReader {
     //Generate random quote
     public String generateRandomQuote(){
 
-        int index = new Random().nextInt(quotes.length);
+        int index = new Random().nextInt(quotes.size());
         StringBuilder result = new StringBuilder();
-        result.append(quotes[index].getText());
-        result.append("\n- " + quotes[index].getAuthor());
+        result.append(quotes.get(index).getText());
+        result.append("\n- " + quotes.get(index).getAuthor());
 
         return result.toString();
     }
 
-    public Quote[] getQuotes() {
+    public List<Quote> getQuotes() {
         return quotes;
     }
 
     public String getRandomQuote(){
         return quote;
+    }
+
+    private void writeToFile(){
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        String json = gson.toJson(quotes);
+        try {
+            System.out.println("Writing to file...");
+            FileWriter writer = new FileWriter(FILE);
+            writer.write(json);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 

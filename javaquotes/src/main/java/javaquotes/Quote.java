@@ -1,5 +1,6 @@
 package javaquotes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Quote {
@@ -19,6 +20,15 @@ public class Quote {
         this.likes = likes;
         this.text = text;
     }
+
+    //Constructor
+    public Quote(String author, String text) {
+        this.tags = new ArrayList<>();
+        this.author = author;
+        this.text = text;
+        this.likes = "0 likes";
+    }
+
 
     //Getters
     public List<String> getTags() {
