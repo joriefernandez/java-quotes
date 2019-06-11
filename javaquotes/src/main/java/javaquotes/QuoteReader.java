@@ -28,19 +28,16 @@ public class QuoteReader {
 
     }
 
-    //Read and return quotes from file
-    private String readQuoteFile(){
+    //Read  quotes from file
+    private void readQuoteFile(){
         Gson gson = new Gson();
         try {
             JsonReader reader = new JsonReader(new FileReader(FILE));
             quotes = gson.fromJson(reader, Quote[].class);
-            return generateRandomQuote();
+
         } catch (FileNotFoundException e) {
             System.out.println("File not found!");
         }
-
-        return generateRandomQuote();
-
     }
 
     //get quote from API
@@ -63,13 +60,13 @@ public class QuoteReader {
                 quote = quoteAPI.toString() ;
 
             }else{
-               quote = readQuoteFile();
-
+               readQuoteFile();
+                quote = generateRandomQuote();
             }
 
 
         } catch (IOException e) {
-            quote = readQuoteFile();
+            System.out.println("Error getting quote");
 
         }
         return quote;
