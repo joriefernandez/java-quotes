@@ -15,4 +15,10 @@ public class QuoteReaderTest {
         QuoteReader test = new QuoteReader();
         assertNotNull("Should contain quotes", test.getRandomQuote());
     }
+
+    @Test
+    public void testRandomQuoteData(){
+        QuoteReader test = new QuoteReader();
+        assertNotNull("Should contain quotes", test.quote);
+    }
 }
