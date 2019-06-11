@@ -19,6 +19,7 @@ public class QuoteAPI {
         this.quoteText = quoteText;
     }
 
+    //to string
     public String toString(){
         StringBuilder result = new StringBuilder();
         result.append(quoteText);
@@ -26,5 +27,6 @@ public class QuoteAPI {
 
         return result.toString();
     }
+
 
 }
