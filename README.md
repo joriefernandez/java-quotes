@@ -1,6 +1,7 @@
-# java-quotes
+# Java Quotes
+Return a random quote from API: http://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en or from the quotes file.
 
-To run the application, :
+## To run the application, :
 1. clone the repo
 2. add dependency on build.gradle: `implementation 'com.google.code.gson:gson:2.8.5'`
 3. go to the directory and run: `./gradlew run`
